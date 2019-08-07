@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.bsmoot</groupId>
+    <artifactId>rest-recaptcha-parent</artifactId>
+    <version>1.0.2</version>
+    <packaging>pom</packaging>
+
+    <name>Rest ReCaptcha Parent</name>
+    <description>Parent module of the rest ReCaptcha project for Spring Boot.</description>
+    <url>https://github.com/Nadavbi87/spring-boot-rest-recaptcha</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>B-Smooth</id>
+            <name>Nadav Bismuth</name>
+            <email>nadavbi87@gmail.com</email>
+            <url>https://github.com/Nadavbi87</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/Nadavbi87/spring-boot-rest-recaptcha.git</connection>
+        <developerConnection>scm:git:https://github.com/Nadavbi87/spring-boot-rest-recaptcha.git</developerConnection>
+        <url>https://github.com/Nadavbi87/spring-boot-rest-recaptcha</url>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Spring -->
+        <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
+
+        <!-- Maven plugins -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.java-source.version>3.0.1</maven.java-source.version>
+        <maven.javadoc.version>3.1.0</maven.javadoc.version>
+        <maven.gpg>1.6</maven.gpg>
+        <maven.nexus-staging.version>1.6.8</maven.nexus-staging.version>
+
+        <!-- Project libs-->
+        <rest-recaptcha-lib.version>1.0.2</rest-recaptcha-lib.version>
+        <rest-recaptcha-autoconfigure.version>1.0.2</rest-recaptcha-autoconfigure.version>
+    </properties>
+
+    <modules>
+        <module>lib</module>
+        <module>autoconfigure</module>
+        <module>starter</module>
+        <module>sample-app</module>
+    </modules>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${maven.java-source.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${maven.javadoc.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven.gpg}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>${maven.nexus-staging.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

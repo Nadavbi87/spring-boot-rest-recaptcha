@@ -15,13 +15,13 @@ Easy integration for Rest/Web API spring boot projects with Google's reCaptcha s
   
 ```xml  
 <dependencies>
-	... 
-	<dependency> 
-		 <groupId>com.bsmooth</groupId> 
-		 <artifactId>rest-recptcha-spring-boot-starter</artifactId> 
-		 <version>1.0.2</version> 
-	 </dependency> 
-	 ...
+    ... 
+    <dependency> 
+        <groupId>com.bsmooth</groupId> 
+	<artifactId>rest-recptcha-spring-boot-starter</artifactId> 
+	<version>1.0.2</version> 
+    </dependency> 	
+    ...
 </dependencies>  
   
 ```   
@@ -57,10 +57,9 @@ Prefix - `recaptcha.aspect`
 | Name | Description | Default Value |  
 | :---         |     :---      | :--- |  
 | `header-name`| The header name in which the client needs to send his ReCaptcha response | "g-recaptcha-response" |  
-| `proxy-real-ip-header-name`| The header of the real client IP (e.g.: X-Forwarded-For) | null, By default the ```javarequest.getRemoteAddr()``` will be used. |  
+| `proxy-real-ip-header-name`| The header of the real client IP (e.g.: X-Forwarded-For) | null, By default the ```request.getRemoteAddr()``` will be used. |  
 | `proxy-real-ip-header-delimiter` | Delimiter for multi value real client IP header (e.g.: \, ) | null |  
 | `verified-ips` | List of verified IPs (',' delimited) that will pass automatically without captcha validation ( useful if you want to exclude dev/test machines )   | null |  
-| `socket-timeout`| The http client socket time out  | 2000 |  
   
 **Example**  	
   

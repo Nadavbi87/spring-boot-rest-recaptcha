@@ -33,7 +33,7 @@ If you do not want to customize the reCAPTCHA validation behaviour just use the 
 And add your configuretion from application properties.  
   
 At the moment the following properties can be configured:  
-  #### General properties
+  #### Global Properties
 | Name | Description | Default Value |  
 | :---         |     :---      | :--- |  
 | `recaptcha.enabled`| Disable/Enable the auto configuration | true |  
@@ -76,16 +76,19 @@ Protected Endpoint
 @RestController  
 public class RestReCaptchaController {  
   
- @RequiresCaptcha @GetMapping("/protected") public boolean captchaProtectedPath(){ return true; }}  
+ @RequiresCaptcha 
+ @GetMapping("/protected") 
+ public boolean captchaProtectedPath() { return true; }
+}  
 ```  
  Catch Exceptions and decide how to react.
  Exceptions:
-    - `MissingReCaptchaException` - Bad Request.
-    - `ClientReCaptchaException`&nbsp;&nbsp;&nbsp;- reCAPTCHA Client Error.
-    - `ServerReCaptchaException`  &nbsp; - reCAPTCHA Server Error
+ - `MissingReCaptchaException` - Bad Request.
+ - `ClientReCaptchaException`&nbsp;&nbsp;&nbsp;- reCAPTCHA Client Error.
+ - `ServerReCaptchaException`  &nbsp; - reCAPTCHA Server Error
 
  ```java
- @ControllerAdvice  
+@ControllerAdvice  
 @Order(Ordered.HIGHEST_PRECEDENCE)  
 public class RestExceptionHandler {  
   
@@ -116,40 +119,41 @@ If you want custom error handlers for different scenarios, just define your own 
 
 ```java  
 @Configuration  
-public class CustomHandlersConfiguration{  
-	@Bean  
-	ErrorResponseHandler customErrorResponseHandler(){  
-	    return new ErrorResponseHandler(){  
-	        AuditLogger auditLogger = ....
-	        @Override  
-		    public void handle(ProceedingJoinPoint joinPoint, ReCaptchaResponse response, HttpServletRequest request) throws ReCaptchaException {
-			    ReCaptchaResponse.ErrorCode[] errorCodes = response.getErrorCodes();  
-				String errorMessage = getFirstErrorMessage(errorCodes);
-				get invkoed method, ip etc..
-				...
-				auditLogger.write(event, method, ip, response, errorMessage...);
-				
-				if(response.hasServerError()){  
-				    throw new ServerReCaptchaException(errorMessage);  
-				}else if(response.hasClientError()){  
-				    throw new ClientReCaptchaException(errorMessage);
-			    }			
-			}  
-	    };  
-	}  
+public class CustomHandlersConfiguration {  
+    @Bean  
+    ErrorResponseHandler customErrorResponseHandler() {  
+        return new ErrorResponseHandler(){  
+            AuditLogger auditLogger = ....
+            Override  
+            public void handle(ProceedingJoinPoint joinPoint, ReCaptchaResponse response, HttpServletRequest request) throws ReCaptchaException {
+                ReCaptchaResponse.ErrorCode[] errorCodes = response.getErrorCodes();  
+                String errorMessage = getFirstErrorMessage(errorCodes);
+                get invkoed method, ip etc..
+                ...
+                auditLogger.write(event, method, ip, response, errorMessage...);
+		
+               if(response.hasServerError()){  
+                    throw new ServerReCaptchaException(errorMessage);  
+                }else if(response.hasClientError()){  
+                    throw new ClientReCaptchaException(errorMessage);
+                }			
+            }  
+        };  
+    }  
   
-	@Bean  
-	SuccessResponseHandler customSuccessResponseHandler(){  
-	    return new SuccessResponseHandler() {
-		    AuditLogger auditLogger = ....  
-		    @Override  
-		    public void handle(ProceedingJoinPoint joinPoint, ReCaptchaResponse response, HttpServletRequest request) throws ReCaptchaException {  
-	            get invoked method, ip etc.. 
-	            ...
-		        auditLogger.write(event, method, ip, response...); 
-        }  
-    };  
-}  
+    @Bean  
+    SuccessResponseHandler customSuccessResponseHandler() {  
+        return new SuccessResponseHandler() {
+            AuditLogger auditLogger = ....  
+            @Override  
+            public void handle(ProceedingJoinPoint joinPoint, ReCaptchaResponse response, HttpServletRequest request) throws ReCaptchaException {  
+            get invoked method, ip etc.. 
+            ...
+            auditLogger.write(event, method, ip, response...); 
+            }  
+        };  
+    }
+}      
 ```  
   
 ### Fully reCAPTCHA service custom behaviour  
@@ -170,7 +174,7 @@ public class CustomReCaptchaServiceImpl implements ReCaptchaService {
     private YourHttpClient httpClient;  
     private YourServiceProps serviceProps;  
   
-	@Autowired  
+    @Autowired  
     public ReCaptchaServiceImpl(YourHttpClient httpClient, YourServiceProps serviceProps) {  
         this.httpClient= httpClient;  
         this.serviceProps= serviceProps;  
